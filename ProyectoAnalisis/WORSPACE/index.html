@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ética y Autoaprendizaje en IA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- ENCABEZADO -->
+  <header class="bg-white border-b-4 border-violet-700">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <span class="text-lg font-extrabold tracking-tight text-violet-800">Ética y Autoaprendizaje en IA</span>
+      <span id="saludo" class="hidden text-lg font-extrabold text-emerald-700"></span>
+    </div>
+  </header>
+
+  <!-- DOS COLUMNAS: módulos a la izquierda y contenido a la derecha -->
+  <div class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+
+    <!-- COLUMNA IZQUIERDA: módulos -->
+    <aside class="md:col-span-4 bg-gray-50 border-2 border-gray-400 rounded-xl p-5 self-start">
+      <h2 class="text-lg font-extrabold mb-3">Módulos</h2>
+
+      <div class="space-y-3" id="menu"></div>
+
+      <p id="avance-texto" class="mt-4 font-extrabold">0 de 3 módulos revisados</p>
+      <div class="mt-2 h-4 rounded-full border-2 border-violet-700 bg-white overflow-hidden">
+        <div id="avance-barra" class="h-full bg-emerald-500" style="width:0%"></div>
+      </div>
+
+      <label for="opcion" class="block mt-4 text-sm text-gray-700">Ir directo al módulo (número):</label>
+      <div class="mt-1 flex gap-2">
+        <input id="opcion" type="text" class="w-full px-3 py-2 rounded-lg border-2 border-gray-400 bg-white" />
+        <button id="btn-ir" class="px-4 py-2 rounded-lg border-2 border-violet-700 bg-white font-extrabold text-violet-800 hover:bg-violet-50">Ir</button>
+      </div>
+      <p id="aviso" class="hidden mt-2 px-3 py-2 rounded-lg border-2 border-violet-700 bg-violet-100 text-sm font-bold text-violet-900"></p>
+
+      <button id="btn-codigo" disabled class="mt-3 w-full py-3 rounded-lg border-2 font-extrabold bg-emerald-600 border-emerald-800 text-white hover:bg-emerald-700 disabled:bg-gray-200 disabled:border-dashed disabled:border-gray-500 disabled:text-gray-500 disabled:cursor-not-allowed">
+        Obtener mi código ético
+      </button>
+      <p id="nota-codigo" class="mt-2 text-xs text-gray-600">Se habilita al revisar los 3 módulos</p>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="md:col-span-8 bg-white border-2 border-gray-400 rounded-xl p-6 sm:p-8 min-h-[34rem] relative">
+
+      <!-- E-01: Registro -->
+      <section id="vista-registro">
+        <h1 class="text-3xl font-extrabold mb-4 text-violet-800">Bienvenida</h1>
+        <p class="text-gray-700 mb-2">Esta guía te enseña a usar la inteligencia artificial con ética, evitando el plagio y cuidando tu privacidad.</p>
+        <p class="text-gray-700 mb-8">Revisa los 3 módulos y al final obtén tu propio código ético.</p>
+        <label for="nombre" class="block text-lg mb-2">Escribe tu nombre para comenzar:</label>
+        <input id="nombre" type="text" maxlength="40" placeholder="[campo de texto]" class="w-full max-w-md px-4 py-3 rounded-lg border-2 border-gray-500" />
+        <p id="error-nombre" class="hidden mt-2 max-w-md px-4 py-2 rounded-lg border-2 border-violet-700 bg-violet-100 font-bold text-violet-900">Escribe tu nombre para continuar.</p>
+        <button id="btn-comenzar" class="mt-3 px-10 py-2.5 rounded-lg border-2 border-emerald-800 bg-emerald-600 text-white text-lg font-extrabold hover:bg-emerald-700">Comenzar</button>
+        <p class="mt-3 text-sm text-gray-600">No se pide correo ni contraseña.</p>
+      </section>
+
+      <!-- E-02 y E-03: Módulo (con ejemplo antes y después) -->
+      <section id="vista-modulo" class="hidden">
+        <h1 id="m-titulo" class="text-3xl font-extrabold mb-1 text-violet-800"></h1>
+        <p id="m-tema" class="font-extrabold mb-3"></p>
+        <p id="m-texto" class="text-gray-700 mb-5"></p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="border-2 border-gray-500 rounded-lg bg-gray-50 p-4">
+            <h3 class="font-extrabold text-emerald-700 mb-1">Incluye</h3>
+            <p id="m-incluye" class="text-sm text-gray-700"></p>
+          </div>
+          <div class="border-2 border-gray-500 rounded-lg bg-gray-50 p-4">
+            <h3 class="font-extrabold text-violet-700 mb-1">No incluye</h3>
+            <p id="m-excluye" class="text-sm text-gray-700"></p>
+          </div>
+        </div>
+
+        <div id="bloque-ejemplo" class="hidden mt-6">
+          <h2 class="text-xl font-extrabold mb-3">Ejemplo: antes y después</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="border-2 border-gray-500 rounded-lg bg-gray-50 p-4">
+              <h3 class="font-extrabold mb-1">Antes</h3>
+              <p id="e-antes" class="text-sm text-gray-700"></p>
+            </div>
+            <div class="border-2 border-emerald-600 rounded-lg bg-emerald-50 p-4">
+              <h3 class="font-extrabold mb-1">Después</h3>
+              <p id="e-despues" class="text-sm text-gray-700"></p>
+            </div>
+          </div>
+          <p id="e-explicacion" class="mt-3 text-sm text-gray-600 italic"></p>
+        </div>
+
+        <button id="btn-ejemplo" class="mt-8 px-6 py-3 rounded-lg border-2 border-emerald-800 bg-emerald-600 text-white font-extrabold hover:bg-emerald-700">Ver ejemplo antes y después</button>
+      </section>
+
+      <!-- E-04: Código ético -->
+      <section id="vista-codigo" class="hidden">
+        <h1 class="text-3xl font-extrabold mb-1 text-violet-800">Código ético de <span id="c-nombre"></span></h1>
+        <p class="text-lg text-gray-700 mb-4">Estas son las 10 reglas que me comprometo a seguir:</p>
+        <ol id="c-lista" class="space-y-2"></ol>
+        <button id="btn-volver" class="mt-6 px-6 py-3 rounded-lg border-2 border-violet-700 bg-white font-extrabold text-violet-800 hover:bg-violet-50">Volver al módulo 1</button>
+      </section>
+    </main>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="bg-white border-t-4 border-violet-700 py-3 text-center text-sm text-gray-700">
+    Privacidad: tus datos no se guardan ni se envían
+  </footer>
+
+  <script>
+    // Contenido fijo de la guía. El nombre solo vive en memoria (RNF-04).
+    const modulos = [
+      { nombre: "Fundamentos y Consejos Prácticos",
+        tema: "Cómo redactar instrucciones claras",
+        texto: "Indica qué necesitas, para qué lo necesitas y en qué formato.",
+        incluye: "Optimización de instrucciones y verificación de la información.",
+        excluye: "Funcionamiento interno de las redes neuronales.",
+        antes: "Hazme un sistema.",
+        despues: "Enumera 5 requerimientos funcionales para un sistema de préstamo de libros de una biblioteca escolar.",
+        explicacion: "La primera es ambigua; la segunda es concreta y verificable." },
+      { nombre: "Ética, Propiedad Intelectual y Responsabilidad",
+        tema: "Consulta, inspiración y plagio",
+        texto: "Apoyarse en una fuente no es lo mismo que copiarla: cita siempre.",
+        incluye: "Sesgos, derechos de autor, plagio y desinformación.",
+        excluye: "Debates filosóficos sobre la naturaleza de la tecnología.",
+        antes: "Copié el código y lo entregué.",
+        despues: "Usé la herramienta para entender el error, escribí mi solución y cité la herramienta.",
+        explicacion: "La segunda conserva la autoría y es transparente." },
+      { nombre: "Normatividades, Privacidad y Ciberseguridad",
+        tema: "Protección de datos personales",
+        texto: "No escribas datos personales tuyos ni de otras personas en herramientas externas.",
+        incluye: "Protección de datos personales y buenas prácticas de seguridad.",
+        excluye: "Auditorías legales corporativas.",
+        antes: "Pegué los datos de mis compañeros para que me ayudara.",
+        despues: "Usé datos de ejemplo inventados, sin información personal.",
+        explicacion: "La segunda protege la privacidad." }
+    ];
+    const reglas = [
+      "Verificaré la información con al menos dos fuentes.",
+      "Redactaré instrucciones claras y revisaré las respuestas.",
+      "Entenderé el código antes de entregarlo.",
+      "Citaré cuando me apoye en una herramienta de IA.",
+      "Entregaré trabajos propios: la IA es apoyo, no sustituto.",
+      "Revisaré posibles sesgos en las respuestas.",
+      "No difundiré información falsa.",
+      "No compartiré datos personales míos ni de otras personas.",
+      "No subiré documentos o código privados sin autorización.",
+      "Conoceré las normas de mi institución sobre datos."
+    ];
+
+    let nombre = "", actual = -1;
+    const revisados = new Set();
+    const $ = (id) => document.getElementById(id);
+    const vistas = ["vista-registro", "vista-modulo", "vista-codigo"];
+    const mostrar = (v) => vistas.forEach(x => $(x).classList.toggle("hidden", x !== v));
+
+    // Menú lateral de módulos
+    function dibujarMenu() {
+      const menu = $("menu"); menu.innerHTML = "";
+      modulos.forEach((m, i) => {
+        const bloqueado = nombre === "";
+        const rev = revisados.has(i);
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "w-full text-left flex items-center gap-3 rounded-lg p-3 " +
+          (bloqueado ? "border-2 border-dashed border-gray-400 bg-gray-100 text-gray-500 cursor-not-allowed"
+                     : (i === actual ? "border-4 border-violet-700 bg-white" : "border-2 border-gray-500 bg-white hover:border-emerald-600"));
+        const num = document.createElement("span");
+        num.className = "flex-shrink-0 w-9 h-9 rounded-full border-2 flex items-center justify-center font-bold " + (bloqueado ? "border-gray-400" : "border-violet-700");
+        num.textContent = i + 1;
+        const txt = document.createElement("span");
+        const t = document.createElement("span"); t.className = "block text-sm leading-tight"; t.textContent = m.nombre;
+        const e = document.createElement("span");
+        e.className = "inline-block mt-1 px-2 text-xs rounded-full border " + (rev ? "border-emerald-700 bg-emerald-100 text-emerald-800 font-bold" : "border-gray-500");
+        e.textContent = rev ? "Revisado" : "Pendiente";
+        txt.append(t, e); b.append(num, txt);
+        b.addEventListener("click", () => irAlModulo(i));
+        menu.appendChild(b);
+      });
+      $("avance-texto").textContent = revisados.size + " de 3 módulos revisados";
+      $("avance-barra").style.width = Math.round(revisados.size / 3 * 100) + "%";
+      const listo = revisados.size === 3;
+      $("btn-codigo").disabled = !listo;
+      $("nota-codigo").textContent = listo ? "Listo para generar" : "Se habilita al revisar los 3 módulos";
+    }
+
+    // RF-03: registrar el nombre
+    function comenzar() {
+      const v = $("nombre").value.trim();
+      if (v === "") { $("error-nombre").classList.remove("hidden"); return; }
+      nombre = v;
+      $("saludo").textContent = "Hola, " + nombre;
+      $("saludo").classList.remove("hidden");
+      irAlModulo(0);
+    }
+
+    // RF-01 y RF-02: mostrar un módulo
+    function irAlModulo(i) {
+      if (nombre === "") return;
+      const m = modulos[i]; actual = i; revisados.add(i);
+      $("m-titulo").textContent = "Módulo " + (i + 1) + ": " + m.nombre;
+      $("m-tema").textContent = m.tema;
+      $("m-texto").textContent = m.texto;
+      $("m-incluye").textContent = m.incluye;
+      $("m-excluye").textContent = m.excluye;
+      $("e-antes").textContent = m.antes;
+      $("e-despues").textContent = m.despues;
+      $("e-explicacion").textContent = m.explicacion;
+      $("bloque-ejemplo").classList.add("hidden");
+      $("btn-ejemplo").classList.remove("hidden");
+      mostrar("vista-modulo");
+      dibujarMenu();
+    }
+
+    // RF-05: validar que la opción sea 1, 2 o 3
+    function irDirecto() {
+      if (nombre === "") return;
+      const t = $("opcion").value.trim();
+      if (/^[1-3]$/.test(t)) { $("aviso").classList.add("hidden"); irAlModulo(Number(t) - 1); }
+      else { $("aviso").textContent = "Esa opción no existe. Escribe 1, 2 o 3."; $("aviso").classList.remove("hidden"); }
+    }
+
+    // RF-04: código ético con el nombre
+    function mostrarCodigo() {
+      if (revisados.size < 3) return;
+      $("c-nombre").textContent = nombre;
+      const ol = $("c-lista"); ol.innerHTML = "";
+      reglas.forEach((r, k) => {
+        const li = document.createElement("li"); li.className = "flex items-center gap-3";
+        const n = document.createElement("span");
+        n.className = "flex-shrink-0 w-8 h-8 rounded-full border-2 border-violet-700 flex items-center justify-center text-sm font-bold";
+        n.textContent = k + 1;
+        const t = document.createElement("span"); t.className = "text-gray-800"; t.textContent = r;
+        li.append(n, t); ol.appendChild(li);
+      });
+      mostrar("vista-codigo");
+    }
+
+    $("btn-comenzar").addEventListener("click", comenzar);
+    $("nombre").addEventListener("keydown", e => { if (e.key === "Enter") comenzar(); });
+    $("btn-ir").addEventListener("click", irDirecto);
+    $("opcion").addEventListener("keydown", e => { if (e.key === "Enter") irDirecto(); });
+    $("btn-ejemplo").addEventListener("click", () => { $("bloque-ejemplo").classList.remove("hidden"); $("btn-ejemplo").classList.add("hidden"); });
+    $("btn-codigo").addEventListener("click", mostrarCodigo);
+    $("btn-volver").addEventListener("click", () => irAlModulo(0));
+    dibujarMenu();
+  </script>
+</body>
+</html>
